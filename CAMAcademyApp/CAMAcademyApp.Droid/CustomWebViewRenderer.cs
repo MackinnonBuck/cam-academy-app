@@ -13,6 +13,7 @@ using Xamarin.Forms.Platform.Android;
 using Xamarin.Forms;
 using CAMAcademyApp;
 using CAMAcademyApp.Droid;
+using UIKit;
 
 [assembly: ExportRenderer(typeof(CustomWebView), typeof(CustomWebViewRenderer))]
 namespace CAMAcademyApp.Droid
@@ -30,7 +31,11 @@ namespace CAMAcademyApp.Droid
             {
                 Android.Webkit.WebView webView = new Android.Webkit.WebView(Forms.Context);
                 webView.Settings.JavaScriptEnabled = false;
+
                 SetNativeControl(webView);
+
+                Control.Settings.BuiltInZoomControls = true;
+                Control.Settings.DisplayZoomControls = false;
             }
 
             if (e.NewElement != null)

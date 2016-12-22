@@ -15,27 +15,53 @@ namespace CAMAcademyApp
     public class SelectiveWebPage : ContentPage
     {
         /// <summary>
+        /// Returns the Content as a StackLayout.
+        /// </summary>
+        protected StackLayout StackLayout { get { return Content as StackLayout; } }
+
+        /// <summary>
+        /// The view the SelectiveWebPage displays.
+        /// </summary>
+        private View _mainView;
+
+        /// <summary>
+        /// Gets or sets the main view.
+        /// </summary>
+        private View MainView
+        {
+            get
+            {
+                return _mainView;
+            }
+            set
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    if (_mainView != null && StackLayout.Children.Contains(_mainView))
+                        StackLayout.Children.Remove(_mainView);
+
+                    _mainView = value;
+
+                    StackLayout.Children.Add(_mainView);
+
+                    StackLayout.ForceLayout();
+                });
+            }
+        }
+
+        /// <summary>
         /// Initializes a new SelectiveWebPage with the given title.
         /// </summary>
         /// <param name="title"></param>
-        public SelectiveWebPage(string title)
+        protected SelectiveWebPage(string title)
         {
             Title = title;
             BackgroundColor = CAMColors.PrimaryDark;
 
             Content = new StackLayout
             {
-                HorizontalOptions = LayoutOptions.CenterAndExpand,
-                VerticalOptions = LayoutOptions.CenterAndExpand,
-                Children =
-                {
-                    new Label
-                    {
-                        Text = "Loading...",
-                        TextColor = CAMColors.Accent,
-                        FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label))
-                    }
-                }
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.FillAndExpand,
             };
         }
 
@@ -44,18 +70,34 @@ namespace CAMAcademyApp
         /// </summary>
         /// <param name="baseUri"></param>
         /// <param name="htmlTargets"></param>
-        public void Load(string baseUri, List<KeyValuePair<string, string>> htmlTargets)
+        protected void Load(string baseUri, List<KeyValuePair<string, string>> attributesList)
         {
-            Task.Run(() => ParseHTML(baseUri, htmlTargets)).ContinueWith((x) => GenerateWebView(x.Result));
+            MainView = new ActivityIndicator
+            {
+                Color = CAMColors.Accent,
+                IsRunning = true
+            };
+
+            Task.Run(() => ParseHTML(baseUri, attributesList)).ContinueWith((x) => MainView = x.Result == null ? new Label
+            {
+                Text = "Could not load from webpage.",
+                TextColor = CAMColors.Accent,
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label))
+            } as View : new CustomWebView
+            {
+                SourceHTML = x.Result,
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                HorizontalOptions = LayoutOptions.FillAndExpand
+            });
         }
 
         /// <summary>
         /// Loads and parses HTML from the given base URI and HTML target attributes.
         /// </summary>
         /// <param name="baseUri"></param>
-        /// <param name="htmlTargets"></param>
+        /// <param name="attributesList"></param>
         /// <returns></returns>
-        async Task<string> ParseHTML(string baseUri, List<KeyValuePair<string, string>> htmlTargets)
+        async Task<string> ParseHTML(string baseUri, List<KeyValuePair<string, string>> attributesList)
         {
             WebRequest request;
             WebResponse response;
@@ -76,7 +118,7 @@ namespace CAMAcademyApp
 
             HtmlNode node = doc.DocumentNode;
 
-            foreach (var target in htmlTargets)
+            foreach (var target in attributesList)
             {
                 node = SearchNode(node, target.Key, target.Value);
 
@@ -106,52 +148,6 @@ namespace CAMAcademyApp
             }
 
             return null;
-        }
-
-        /// <summary>
-        /// Generates a CustomWebView from the given HTML, if valid.
-        /// </summary>
-        /// <param name="html"></param>
-        void GenerateWebView(string html)
-        {
-            Device.BeginInvokeOnMainThread(() =>
-            {
-                if (html == null)
-                {
-                    Content = new StackLayout
-                    {
-                        HorizontalOptions = LayoutOptions.CenterAndExpand,
-                        VerticalOptions = LayoutOptions.CenterAndExpand,
-                        Children =
-                        {
-                            new Label
-                            {
-                                Text = "Could not load from webpage.",
-                                TextColor = CAMColors.Accent,
-                                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label))
-                            }
-                        }
-                    };
-                }
-                else
-                {
-                    Content = new StackLayout
-                    {
-                        BackgroundColor = CAMColors.PrimaryDark,
-                        VerticalOptions = LayoutOptions.FillAndExpand,
-                        HorizontalOptions = LayoutOptions.FillAndExpand,
-                        Children =
-                        {
-                            new CustomWebView
-                            {
-                                SourceHTML = html,
-                                VerticalOptions = LayoutOptions.FillAndExpand,
-                                HorizontalOptions = LayoutOptions.FillAndExpand
-                            }
-                        }
-                    };
-                }
-            });
         }
     }
 }
