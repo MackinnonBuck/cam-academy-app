@@ -7,13 +7,24 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
-namespace CAMAcademyApp
+namespace CAMAcademyApp.Core
 {
     /// <summary>
     /// Used for loading specific parts of a webpage.
     /// </summary>
-    public class SelectiveWebPage : ContentPage
+    public class JunklessPage : ContentPage
     {
+        /*
+         * TODO (old):
+         * The TabbedPage parent class (a derived class or not) contains SelectiveWebPages, not MultiSelectiveWebPages.
+         * There is a global secondary toolbar item that allows you to switch between the various sections.
+         * 
+         * So it goes:
+         * Primary: In master page.
+         * Secondary: In the secondary toolbar item.
+         * Tertiary: In the TabbedPage.
+         */
+
         /// <summary>
         /// Returns the Content as a StackLayout.
         /// </summary>
@@ -53,7 +64,7 @@ namespace CAMAcademyApp
         /// Initializes a new SelectiveWebPage with the given title.
         /// </summary>
         /// <param name="title"></param>
-        protected SelectiveWebPage(string title)
+        public JunklessPage(string title, string baseUri)
         {
             Title = title;
             BackgroundColor = CAMColors.PrimaryDark;
@@ -63,26 +74,19 @@ namespace CAMAcademyApp
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 VerticalOptions = LayoutOptions.FillAndExpand,
             };
-        }
 
-        /// <summary>
-        /// Loads the webpage from the given base URI and HTML target attributes.
-        /// </summary>
-        /// <param name="baseUri"></param>
-        /// <param name="htmlTargets"></param>
-        protected void Load(string baseUri, List<KeyValuePair<string, string>> attributesList)
-        {
             MainView = new ActivityIndicator
             {
                 Color = CAMColors.Accent,
                 IsRunning = true
             };
 
-            Task.Run(() => ParseHTML(baseUri, attributesList)).ContinueWith((x) => MainView = x.Result == null ? new Label
+            Task.Run(() => ShaveJunkHtml(baseUri)).ContinueWith((x) => MainView = x.Result == null ? new Label
             {
                 Text = "Could not load from webpage.",
                 TextColor = CAMColors.Accent,
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label))
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                HorizontalOptions = LayoutOptions.CenterAndExpand
             } as View : new CustomWebView
             {
                 SourceHTML = x.Result,
@@ -97,7 +101,32 @@ namespace CAMAcademyApp
         /// <param name="baseUri"></param>
         /// <param name="attributesList"></param>
         /// <returns></returns>
-        async Task<string> ParseHTML(string baseUri, List<KeyValuePair<string, string>> attributesList)
+        async Task<string> ShaveJunkHtml(string baseUri)
+        {
+            HtmlDocument document = await GenerateHtmlDocument(baseUri);
+
+            if (document == null)
+                return null;
+
+            HtmlNode node = SearchNode(document.DocumentNode, "class", new string[] { SiteAttributes.ContentClassName });
+
+            if (node == null)
+                return null;
+
+            node = SearchNode(node, "style", SiteAttributes.ContentStyleAttributes);
+
+            if (node == null)
+                return null;
+
+            return node.OuterHtml;
+        }
+
+        /// <summary>
+        /// Generates an HtmlDocument from the given baseUri.
+        /// </summary>
+        /// <param name="baseUri"></param>
+        /// <returns></returns>
+        public static async Task<HtmlDocument> GenerateHtmlDocument(string baseUri)
         {
             WebRequest request;
             WebResponse response;
@@ -110,23 +139,12 @@ namespace CAMAcademyApp
 
                 doc = new HtmlDocument();
                 doc.Load(response.GetResponseStream());
+                return doc;
             }
             catch
             {
                 return null;
             }
-
-            HtmlNode node = doc.DocumentNode;
-
-            foreach (var target in attributesList)
-            {
-                node = SearchNode(node, target.Key, target.Value);
-
-                if (node == null)
-                    return null;
-            }
-
-            return node.OuterHtml;
         }
 
         /// <summary>
@@ -136,15 +154,16 @@ namespace CAMAcademyApp
         /// <param name="attributeName"></param>
         /// <param name="attributeValue"></param>
         /// <returns></returns>
-        HtmlNode SearchNode(HtmlNode parentNode, string attributeName, string attributeValue)
+        HtmlNode SearchNode(HtmlNode parentNode, string attributeName, string[] attributeValues)
         {
             foreach (HtmlAttribute a in parentNode.Descendants().Select(x => x.Attributes[attributeName]))
             {
                 if (a == null)
                     continue;
 
-                if (a.Value == attributeValue)
-                    return a.OwnerNode;
+                foreach (string value in attributeValues)
+                    if (a.Value.Contains(value))
+                        return a.OwnerNode;
             }
 
             return null;

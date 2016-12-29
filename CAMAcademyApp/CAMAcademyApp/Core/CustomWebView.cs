@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
-namespace CAMAcademyApp
+namespace CAMAcademyApp.Core
 {
     public class CustomWebView : View
     {

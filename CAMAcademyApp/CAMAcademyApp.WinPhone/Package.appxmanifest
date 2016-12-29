@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest" xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
 
-  <Identity Name="fcafb604-c171-4649-9aa2-5b39be4c73fa"
+  <Identity Name="99cee08c-22eb-4131-a012-de1a42f5dd11"
             Publisher="CN=Mackinnon Buck"
             Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="fcafb604-c171-4649-9aa2-5b39be4c73fa" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="99cee08c-22eb-4131-a012-de1a42f5dd11" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>CAMAcademyApp.WinPhone</DisplayName>

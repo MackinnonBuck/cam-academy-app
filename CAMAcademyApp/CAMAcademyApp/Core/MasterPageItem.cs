@@ -6,18 +6,13 @@ using System.Text;
 
 using Xamarin.Forms;
 
-namespace CAMAcademyApp
+namespace CAMAcademyApp.Core
 {
     /// <summary>
     /// Defines the structure of a master page item.
     /// </summary>
-    public class MPageItem
+    public class MasterPageItem
     {
-        /// <summary>
-        /// The source of the image loaded.
-        /// </summary>
-        public ImageSource ImageSource { get; set; }
-
         /// <summary>
         /// The text of the page item.
         /// </summary>
@@ -27,5 +22,10 @@ namespace CAMAcademyApp
         /// The type of the view to be displayed when the item is selected.
         /// </summary>
         public Type TargetType { get; set; }
+
+        /// <summary>
+        /// Optional extra arguments passed to the page item.
+        /// </summary>
+        public object[] Arguments { get; set; }
     }
 }

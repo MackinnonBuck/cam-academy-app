@@ -9,6 +9,11 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Android.Webkit;
+using CAMAcademyApp.Core;
+using Java.Lang;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace CAMAcademyApp.Droid
 {

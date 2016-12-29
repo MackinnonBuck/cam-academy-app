@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CAMAcademyApp.Home;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
@@ -6,21 +7,21 @@ using System.Text;
 
 using Xamarin.Forms;
 
-namespace CAMAcademyApp
+namespace CAMAcademyApp.Core
 {
     /// <summary>
     /// Controls the master page and the content that the master page links to.
     /// </summary>
-    public class MDPage : MasterDetailPage
+    public class MainPage : MasterDetailPage
     {
-        MPage masterPage;
+        MasterPage masterPage;
 
         /// <summary>
         /// Initializes a new MDPage instance.
         /// </summary>
-        public MDPage()
+        public MainPage()
         {
-            masterPage = new MPage();
+            masterPage = new MasterPage();
             masterPage.ListView.ItemSelected += ListView_ItemSelected;
             Master = masterPage;
             Detail = new NavigationPage(new HomePage());
@@ -36,8 +37,8 @@ namespace CAMAcademyApp
             if (e.SelectedItem == null)
                 return;
 
-            MPageItem item = (MPageItem)e.SelectedItem;
-            Detail = new NavigationPage((Page)Activator.CreateInstance(item.TargetType));
+            MasterPageItem item = (MasterPageItem)e.SelectedItem;
+            Detail = new NavigationPage((Page)(item.Arguments == null ? Activator.CreateInstance(item.TargetType) : Activator.CreateInstance(item.TargetType, item.Arguments)));
             masterPage.ListView.SelectedItem = null;
             IsPresented = false;
         }

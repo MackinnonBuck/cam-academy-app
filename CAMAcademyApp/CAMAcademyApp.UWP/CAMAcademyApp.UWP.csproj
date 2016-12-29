@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{ED483403-B886-4808-90B9-75DFF9505057}</ProjectGuid>
+    <ProjectGuid>{CB5204CC-64F4-463B-B304-28290E009042}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CAMAcademyApp.UWP</RootNamespace>
@@ -129,7 +129,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CAMAcademyApp\CAMAcademyApp.csproj">
-      <Project>{40ae9aa5-8309-492d-bee1-f882581c7ad0}</Project>
+      <Project>{5959cae1-6427-42b5-9d66-939f7c65b7f4}</Project>
       <Name>CAMAcademyApp</Name>
     </ProjectReference>
   </ItemGroup>
