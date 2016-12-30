@@ -37,8 +37,12 @@ namespace CAMAcademyApp.Core
                 return;
 
             MasterPageItem item = (MasterPageItem)e.SelectedItem;
-            Detail = new NavigationPage((Page)(item.Arguments == null ? Activator.CreateInstance(item.TargetType) : Activator.CreateInstance(item.TargetType, item.Arguments)));
             masterPage.ListView.SelectedItem = null;
+
+            if (item.TargetType == null)
+                return;
+
+            Detail = new NavigationPage((Page)(item.Arguments == null ? Activator.CreateInstance(item.TargetType) : Activator.CreateInstance(item.TargetType, item.Arguments)));
             IsPresented = false;
         }
     }

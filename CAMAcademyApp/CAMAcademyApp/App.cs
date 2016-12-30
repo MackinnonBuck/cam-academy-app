@@ -38,7 +38,32 @@ namespace CAMAcademyApp
 
             RootNode = LinkNode.Generate(request.Execute());
 
+            CleanNode(RootNode);
+
+            foreach (LinkNode childNode in RootNode.Children)
+                CleanNode(childNode);
+
             MainPage = new MainPage();
+        }
+
+        /// <summary>
+        /// Fixes any strange name casing for the child nodes and removes any nodes that don't have parents.
+        /// </summary>
+        /// <param name="node"></param>
+        private void CleanNode(LinkNode node)
+        {
+            List<LinkNode> invalidNodes = new List<LinkNode>();
+
+            foreach (LinkNode childNode in node.Children)
+            {
+                if (childNode.Children.Count == 0)
+                    invalidNodes.Add(childNode);
+                else
+                    childNode.Name = childNode.Name.ToTitleCase();
+            }
+
+            foreach (LinkNode invalidNode in invalidNodes)
+                node.Children.Remove(invalidNode);
         }
 
         protected override void OnStart()

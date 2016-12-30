@@ -17,7 +17,7 @@ namespace CAMAcademyApp.Core
         /// Initializes a new AutoPage with the given LinkNode.
         /// </summary>
         /// <param name="node"></param>
-        public AutoPage(LinkNode node)
+        public AutoPage(LinkNode node, int startPageIndex)
         {
             pageNode = node;
 
@@ -26,7 +26,7 @@ namespace CAMAcademyApp.Core
                 ToolbarItem item = new ToolbarItem
                 {
                     Order = ToolbarItemOrder.Secondary,
-                    Text = childNode.Name.ToTitleCase()
+                    Text = childNode.Name
                 };
 
                 item.Clicked += ToolbarItemClicked;
@@ -34,7 +34,7 @@ namespace CAMAcademyApp.Core
             }
 
             if (ToolbarItems.Count > 0)
-                ToolbarItemClicked(ToolbarItems[0], EventArgs.Empty);
+                ToolbarItemClicked(ToolbarItems[startPageIndex], EventArgs.Empty);
         }
 
         /// <summary>
@@ -44,20 +44,20 @@ namespace CAMAcademyApp.Core
         /// <param name="e"></param>
         private void ToolbarItemClicked(object sender, EventArgs e)
         {
-            Children.Clear();
-
             ToolbarItem item = (ToolbarItem)sender;
 
             LinkNode itemNode = pageNode.Children[ToolbarItems.IndexOf(item)];
 
-            Title = pageNode.Name.ToTitleCase() + " - " + itemNode.Name.ToTitleCase();
+            Children.Clear();
+
+            Title = pageNode.Name + " - " + itemNode.Name;
 
             List<LinkNode> externalNodes = new List<LinkNode>();
 
             foreach (LinkNode childNode in itemNode.Children)
             {
                 if (childNode.Link.StartsWith(SiteAttributes.BaseUri))
-                    Children.Add(new JunklessPage(childNode.Name.ToTitleCase(), childNode.Link));
+                    Children.Add(new JunklessPage(childNode.Name, childNode.Link));
                 else
                     externalNodes.Add(childNode);
             }

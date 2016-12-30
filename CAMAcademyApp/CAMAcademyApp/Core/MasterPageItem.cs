@@ -24,6 +24,11 @@ namespace CAMAcademyApp.Core
         public Type TargetType { get; set; }
 
         /// <summary>
+        /// The type of the cell to be generated.
+        /// </summary>
+        public CustomCell.CellType CellType { get; set; }
+
+        /// <summary>
         /// Optional extra arguments passed to the page item.
         /// </summary>
         public object[] Arguments { get; set; }

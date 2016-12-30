@@ -32,15 +32,25 @@ namespace CAMAcademyApp.Core
                     Arguments = new object[] { "Home", SiteAttributes.BaseUri }
                 }
             };
-
+            
             foreach (LinkNode node in App.RootNode.Children)
             {
                 cells.Add(new MasterPageItem
                 {
-                    Text = node.Name.ToTitleCase(),
-                    TargetType = typeof(AutoPage),
-                    Arguments = new object[] { node }
+                    Text = node.Name,
+                    CellType = CustomCell.CellType.Primary
                 });
+
+                for (int i = 0; i < node.Children.Count; i++)
+                {
+                    cells.Add(new MasterPageItem
+                    {
+                        Text = node.Children[i].Name,
+                        TargetType = typeof(AutoPage),
+                        CellType = CustomCell.CellType.Secondary,
+                        Arguments = new object[] { node, i }
+                    });
+                }
             }
 
             ListView = new ListView
@@ -55,6 +65,7 @@ namespace CAMAcademyApp.Core
                 ItemTemplate = new DataTemplate(() =>
                 {
                     CustomCell cell = new CustomCell();
+                    cell.SetBinding(CustomCell.CellTypeProperty, "CellType");
                     cell.SetBinding(CustomCell.TextProperty, "Text");
                     return cell;
                 }),

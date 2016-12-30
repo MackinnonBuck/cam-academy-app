@@ -12,7 +12,7 @@ namespace CAMAcademyApp.Core
         /// <summary>
         /// The name of the LinkNode.
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// The link associated with the LinkNode.
