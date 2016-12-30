@@ -1,7 +1,4 @@
-﻿using CAMAcademyApp.About;
-using CAMAcademyApp.High;
-using CAMAcademyApp.Home;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
@@ -26,70 +23,25 @@ namespace CAMAcademyApp.Core
         /// </summary>
         public MasterPage()
         {
-            //MPageItem[] cells =
-            //{
-            //    new MPageItem
-            //    {
-            //        ImageSource = ImageSource.FromFile("ic_home_white_24dp.png"),
-            //        Text = "Home",
-            //        TargetType = typeof(HomePage)
-            //    },
-            //    new MPageItem
-            //    {
-            //        ImageSource = ImageSource.FromFile("ic_help_white_24dp.png"),
-            //        Text = "About Us",
-            //        TargetType = typeof(SchoolProfilePage)//typeof(AboutPage)
-            //    },
-            //    new MPageItem
-            //    {
-            //        ImageSource = ImageSource.FromFile("ic_local_library_white_24dp.png"),
-            //        Text = "High School",
-            //        TargetType = typeof(HighSchoolAboutPage)//typeof(HighSchoolPage)
-            //    },
-            //    new MPageItem
-            //    {
-            //        ImageSource = ImageSource.FromFile("ic_local_library_white_24dp.png"),
-            //        Text = "Middle School",
-            //        TargetType = typeof(Middle)//typeof(HighSchoolPage)
-            //    }
-            //};
-
             List<MasterPageItem> cells = new List<MasterPageItem>
             {
                 new MasterPageItem
                 {
-                    Text = "HOME",
-                    TargetType = typeof(HomePage)
+                    Text = "Home",
+                    TargetType = typeof(JunklessPage),
+                    Arguments = new object[] { "Home", SiteAttributes.BaseUri }
                 }
             };
 
-            // TODO: Use the App's RootNode to generate the MasterPageItems.
-
-            //int currentIndex = 0;
-
-            //for (int nextIndex = 0; nextIndex < App.MenuValues.Values.Count;)
-            //{
-            //    List<object> section = (List<object>)App.MenuValues.Values[currentIndex];
-            //    string title = section[0].ToString().ToUpper();
-
-            //    nextIndex++;
-            //    for (; nextIndex < App.MenuValues.Values.Count; nextIndex++)
-            //    {
-            //        List<object> nextSection = (List<object>)App.MenuValues.Values[nextIndex];
-
-            //        if (nextSection.Count > 0 && !nextSection[0].ToString().Equals(string.Empty))
-            //            break;
-            //    }
-
-            //    cells.Add(new MasterPageItem
-            //    {
-            //        Text = title,
-            //        TargetType = typeof(AutoPage),
-            //        Arguments = new object[] { title, currentIndex, nextIndex - 1 }
-            //    });
-
-            //    currentIndex = nextIndex;
-            //}
+            foreach (LinkNode node in App.RootNode.Children)
+            {
+                cells.Add(new MasterPageItem
+                {
+                    Text = node.Name.ToTitleCase(),
+                    TargetType = typeof(AutoPage),
+                    Arguments = new object[] { node }
+                });
+            }
 
             ListView = new ListView
             {

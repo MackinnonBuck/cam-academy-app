@@ -11,7 +11,7 @@ namespace CAMAcademyApp.Core
         /// <summary>
         /// The home page of the CAM Academy website.
         /// </summary>
-        public const string HomePageUri = "http://cam.battlegroundps.org";
+        public const string BaseUri = "http://cam.battlegroundps.org";
 
         /// <summary>
         /// Used to determine the main content tag of the website.
@@ -24,7 +24,7 @@ namespace CAMAcademyApp.Core
         public static readonly string[] ContentStyleAttributes =
         {
             "background:rgb(255,255,255);border:0px solid rgb(215,215,215);width:523px;padding-bottom:20px;float:left;display:block",
-            "border:1px solid #d7d7d7;display:block;float:left;padding-bottom:20px",
+            "display:block;float:left;padding-bottom:20px",
         };
     }
 }

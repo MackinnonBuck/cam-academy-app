@@ -14,6 +14,8 @@ namespace CAMAcademyApp.Droid
     {
         protected override void OnCreate(Bundle bundle)
         {
+            AndroidEnvironment.UnhandledExceptionRaiser += AndroidEnvironmentUnhandledExceptionRaiser;
+
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
 
@@ -21,6 +23,18 @@ namespace CAMAcademyApp.Droid
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
             LoadApplication(new App());
+        }
+        
+        /// <summary>
+        /// Handles a highly-specific Xamarin bug in which pressing the back button when the MainPage is a MasterDetailPage results in a crash.
+        /// This method will just silently close the app in this case and restart if the user resumes it from the task switcher.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AndroidEnvironmentUnhandledExceptionRaiser(object sender, RaiseThrowableEventArgs e)
+        {
+            if (e.Exception.GetType() == typeof(Java.Lang.IllegalStateException))
+                Process.KillProcess(Process.MyPid());
         }
     }
 }

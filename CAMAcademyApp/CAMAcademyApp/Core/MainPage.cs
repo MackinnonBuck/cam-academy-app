@@ -1,5 +1,4 @@
-﻿using CAMAcademyApp.Home;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
@@ -22,9 +21,9 @@ namespace CAMAcademyApp.Core
         public MainPage()
         {
             masterPage = new MasterPage();
-            masterPage.ListView.ItemSelected += ListView_ItemSelected;
+            masterPage.ListView.ItemSelected += ListViewItemSelected;
             Master = masterPage;
-            Detail = new NavigationPage(new HomePage());
+            Detail = new NavigationPage(new JunklessPage("Home", SiteAttributes.BaseUri));
         }
 
         /// <summary>
@@ -32,7 +31,7 @@ namespace CAMAcademyApp.Core
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        private void ListViewItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             if (e.SelectedItem == null)
                 return;

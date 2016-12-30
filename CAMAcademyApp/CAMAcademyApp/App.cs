@@ -16,9 +16,14 @@ namespace CAMAcademyApp
 {
     public class App : Application
     {
-        //public static ValueRange MenuValues { get; private set; }
+        /// <summary>
+        /// The root LinkNode containing information regarding the navigation menu names and links.
+        /// </summary>
         public static LinkNode RootNode { get; private set; }
 
+        /// <summary>
+        /// Initializes the App instance.
+        /// </summary>
         public App()
         {
             SheetsService service = new SheetsService(new BaseClientService.Initializer
@@ -31,16 +36,9 @@ namespace CAMAcademyApp
                 "1nBjpqKNkDyyWw4OwvI_pb05lhRdpkSLJRRqwnbhmxv4",
                 "A2:F");
 
-            //MenuValues = request.Execute();
-
-            RootNode = LinkNode.Generate(request.Execute());//LinkNode.Generate(MenuValues);
+            RootNode = LinkNode.Generate(request.Execute());
 
             MainPage = new MainPage();
-        }
-
-        void GenerateLinkTree(LinkNode node, int column)
-        {
-
         }
 
         protected override void OnStart()

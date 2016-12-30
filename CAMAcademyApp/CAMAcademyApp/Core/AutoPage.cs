@@ -7,42 +7,63 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
-/*
- * TODO: Okay, so here's the deal:
- * Turns out the actual menu is JavaScript generated. Should've guessed though tbh. You can get really close and get the div surrounding the
- * menu items but can't get access to anything inside it. So.
- * I would look into using something like WebKit.NET. It will allow you to load the page and get the JavaScript-generated HTML in a few lines of code.
- */
-
 namespace CAMAcademyApp.Core
 {
     public class AutoPage : TabbedPage
     {
-        public AutoPage(string title, int startIndex, int endIndex)
+        private LinkNode pageNode;
+
+        /// <summary>
+        /// Initializes a new AutoPage with the given LinkNode.
+        /// </summary>
+        /// <param name="node"></param>
+        public AutoPage(LinkNode node)
         {
-            Title = title;
-            
-            IsBusy = true; // TODO: This should trigger the activity indicator but doesn't. Fix.
+            pageNode = node;
 
+            foreach (LinkNode childNode in pageNode.Children)
+            {
+                ToolbarItem item = new ToolbarItem
+                {
+                    Order = ToolbarItemOrder.Secondary,
+                    Text = childNode.Name.ToTitleCase()
+                };
 
-            //Task.Run(() => SiteUtils.GenerateHtmlDocument(SiteInfo.HomePageUri)).ContinueWith((x) => ParseSection(x.Result));
+                item.Clicked += ToolbarItemClicked;
+                ToolbarItems.Add(item);
+            }
+
+            if (ToolbarItems.Count > 0)
+                ToolbarItemClicked(ToolbarItems[0], EventArgs.Empty);
         }
 
-        //public void ParseSection(HtmlDocument document)
-        //{
-        //    HtmlNode iframeNode = SiteUtils.FindNode(document.DocumentNode, "iframe", new KeyValuePair<string, string>("class", "igm"));
+        /// <summary>
+        /// Changes the webpage section based on what ToolbarItem was clicked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ToolbarItemClicked(object sender, EventArgs e)
+        {
+            Children.Clear();
 
-        //    if (iframeNode == null)
-        //        return; // TODO: Handle a case in which null is returned.
+            ToolbarItem item = (ToolbarItem)sender;
 
-        //    string iframeSource = "http:" + iframeNode.Attributes["src"].Value;
+            LinkNode itemNode = pageNode.Children[ToolbarItems.IndexOf(item)];
 
-        //    HtmlDocument embeddedDocument = Task.Run(() => SiteUtils.GenerateHtmlDocument(iframeSource)).Result;
-            
-        //    //HtmlNode node = SiteUtils.FindNode(document.DocumentNode, "div", new KeyValuePair<string, string>("class", "mainNav"));
+            Title = pageNode.Name.ToTitleCase() + " - " + itemNode.Name.ToTitleCase();
 
-        //    //IWebSourceLoader sourceLoader = DependencyService.Get<IWebSourceLoader>();
-        //    //sourceLoader.LoadFromUri(SiteInfo.HomePageUri);
-        //}
+            List<LinkNode> externalNodes = new List<LinkNode>();
+
+            foreach (LinkNode childNode in itemNode.Children)
+            {
+                if (childNode.Link.StartsWith(SiteAttributes.BaseUri))
+                    Children.Add(new JunklessPage(childNode.Name.ToTitleCase(), childNode.Link));
+                else
+                    externalNodes.Add(childNode);
+            }
+
+            if (externalNodes.Count > 0)
+                Children.Add(new ExternalResourcesPage(externalNodes));
+        }
     }
 }

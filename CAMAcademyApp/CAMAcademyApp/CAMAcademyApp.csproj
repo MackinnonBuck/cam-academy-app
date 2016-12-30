@@ -35,25 +35,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="About\AboutPage.cs" />
-    <Compile Include="About\SchoolProfilePage.cs" />
-    <Compile Include="About\StaffPage.cs" />
     <Compile Include="App.cs" />
     <Compile Include="Core\AutoPage.cs" />
     <Compile Include="Core\CAMColors.cs" />
     <Compile Include="Core\CustomCell.cs" />
     <Compile Include="Core\CustomWebView.cs" />
+    <Compile Include="Core\Extensions.cs" />
+    <Compile Include="Core\ExternalResourcesPage.cs" />
     <Compile Include="Core\LinkNode.cs" />
     <Compile Include="Core\MainPage.cs" />
     <Compile Include="Core\MasterPage.cs" />
     <Compile Include="Core\MasterPageItem.cs" />
     <Compile Include="Core\JunklessPage.cs" />
     <Compile Include="Core\SiteAttributes.cs" />
-    <Compile Include="Core\TabbedSelectiveWebPage.cs" />
-    <Compile Include="High\HighSchoolAboutPage.cs" />
-    <Compile Include="High\HighSchoolPage.cs" />
-    <Compile Include="Home\HomePage.cs" />
-    <Compile Include="Middle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

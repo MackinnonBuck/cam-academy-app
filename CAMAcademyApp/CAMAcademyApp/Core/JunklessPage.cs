@@ -14,17 +14,6 @@ namespace CAMAcademyApp.Core
     /// </summary>
     public class JunklessPage : ContentPage
     {
-        /*
-         * TODO (old):
-         * The TabbedPage parent class (a derived class or not) contains SelectiveWebPages, not MultiSelectiveWebPages.
-         * There is a global secondary toolbar item that allows you to switch between the various sections.
-         * 
-         * So it goes:
-         * Primary: In master page.
-         * Secondary: In the secondary toolbar item.
-         * Tertiary: In the TabbedPage.
-         */
-
         /// <summary>
         /// Returns the Content as a StackLayout.
         /// </summary>
@@ -72,7 +61,7 @@ namespace CAMAcademyApp.Core
             Content = new StackLayout
             {
                 HorizontalOptions = LayoutOptions.FillAndExpand,
-                VerticalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.FillAndExpand
             };
 
             MainView = new ActivityIndicator
