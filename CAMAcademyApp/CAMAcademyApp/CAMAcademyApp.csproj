@@ -38,16 +38,24 @@
     <Compile Include="App.cs" />
     <Compile Include="Core\AutoPage.cs" />
     <Compile Include="Core\CAMColors.cs" />
-    <Compile Include="Core\CustomCell.cs" />
+    <Compile Include="Core\Card.cs" />
+    <Compile Include="Core\CardView.cs" />
+    <Compile Include="Core\CategoryItem.cs" />
     <Compile Include="Core\CustomWebView.cs" />
     <Compile Include="Core\Extensions.cs" />
-    <Compile Include="Core\ExternalResourcesPage.cs" />
+    <Compile Include="Core\LinksAndDocumentsPage.cs" />
     <Compile Include="Core\LinkNode.cs" />
     <Compile Include="Core\MainPage.cs" />
+    <Compile Include="Core\MasterListCell.cs" />
     <Compile Include="Core\MasterPage.cs" />
-    <Compile Include="Core\MasterPageItem.cs" />
+    <Compile Include="Core\SearchItem.cs" />
+    <Compile Include="Core\SearchPage.cs" />
+    <Compile Include="Core\SecondaryItem.cs" />
+    <Compile Include="Core\SelectableItem.cs" />
     <Compile Include="Core\JunklessPage.cs" />
+    <Compile Include="Core\MasterTemplateSelector.cs" />
     <Compile Include="Core\SiteAttributes.cs" />
+    <Compile Include="Core\SplashScreen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

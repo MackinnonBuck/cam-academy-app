@@ -6,6 +6,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using System.Runtime.CompilerServices;
 
 namespace CAMAcademyApp.Core
 {
@@ -33,8 +34,7 @@ namespace CAMAcademyApp.Core
                 ToolbarItems.Add(item);
             }
 
-            if (ToolbarItems.Count > 0)
-                ToolbarItemClicked(ToolbarItems[startPageIndex], EventArgs.Empty);
+            SetPage(node.Children[startPageIndex]);
         }
 
         /// <summary>
@@ -48,13 +48,23 @@ namespace CAMAcademyApp.Core
 
             LinkNode itemNode = pageNode.Children[ToolbarItems.IndexOf(item)];
 
+            SetPage(pageNode.Children[ToolbarItems.IndexOf(item)]);
+        }
+
+        /// <summary>
+        /// Sets the page from the given pageIndex and the optional subpageIndex.
+        /// </summary>
+        /// <param name="pageIndex"></param>
+        /// <param name="subpageIndex"></param>
+        private void SetPage(LinkNode node)
+        {
             Children.Clear();
 
-            Title = pageNode.Name + " - " + itemNode.Name;
+            Title = pageNode.Name + " - " + node.Name;
 
             List<LinkNode> externalNodes = new List<LinkNode>();
 
-            foreach (LinkNode childNode in itemNode.Children)
+            foreach (LinkNode childNode in node.Children)
             {
                 if (childNode.Link.StartsWith(SiteAttributes.BaseUri))
                     Children.Add(new JunklessPage(childNode.Name, childNode.Link));
@@ -63,7 +73,7 @@ namespace CAMAcademyApp.Core
             }
 
             if (externalNodes.Count > 0)
-                Children.Add(new ExternalResourcesPage(externalNodes));
+                Children.Add(new LinksAndDocumentsPage(externalNodes));
         }
     }
 }

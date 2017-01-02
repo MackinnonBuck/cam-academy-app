@@ -23,11 +23,16 @@ namespace CAMAcademyApp.Core
         /// </summary>
         public MasterPage()
         {
-            List<MasterPageItem> cells = new List<MasterPageItem>
+            List<object> cells = new List<object>
             {
-                new MasterPageItem
+                new SearchItem
+                {
+                    TargetType = typeof(SearchPage),
+                },
+                new SecondaryItem
                 {
                     Text = "Home",
+                    Appearance = MasterListCell.CellAppearance.Category,
                     TargetType = typeof(JunklessPage),
                     Arguments = new object[] { "Home", SiteAttributes.BaseUri }
                 }
@@ -35,20 +40,19 @@ namespace CAMAcademyApp.Core
             
             foreach (LinkNode node in App.RootNode.Children)
             {
-                cells.Add(new MasterPageItem
+                cells.Add(new CategoryItem
                 {
-                    Text = node.Name,
-                    CellType = CustomCell.CellType.Primary
+                    Text = node.Name
                 });
 
                 for (int i = 0; i < node.Children.Count; i++)
                 {
-                    cells.Add(new MasterPageItem
+                    cells.Add(new SecondaryItem
                     {
                         Text = node.Children[i].Name,
+                        Appearance = MasterListCell.CellAppearance.Item,
                         TargetType = typeof(AutoPage),
-                        CellType = CustomCell.CellType.Secondary,
-                        Arguments = new object[] { node, i }
+                        Arguments = new object[] { node, i, }
                     });
                 }
             }
@@ -62,17 +66,11 @@ namespace CAMAcademyApp.Core
                     Margin = new Thickness(0, 0, 0, 8)
                 },
                 ItemsSource = cells,
-                ItemTemplate = new DataTemplate(() =>
-                {
-                    CustomCell cell = new CustomCell();
-                    cell.SetBinding(CustomCell.CellTypeProperty, "CellType");
-                    cell.SetBinding(CustomCell.TextProperty, "Text");
-                    return cell;
-                }),
+                ItemTemplate = new MasterTemplateSelector(),
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 SeparatorVisibility = SeparatorVisibility.None
             };
-
+            
             BackgroundColor = CAMColors.Primary;
             Title = "View Switcher";
             Content = new StackLayout

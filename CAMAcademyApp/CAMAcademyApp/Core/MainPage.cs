@@ -36,10 +36,10 @@ namespace CAMAcademyApp.Core
             if (e.SelectedItem == null)
                 return;
 
-            MasterPageItem item = (MasterPageItem)e.SelectedItem;
+            SelectableItem item = e.SelectedItem as SelectableItem;
             masterPage.ListView.SelectedItem = null;
 
-            if (item.TargetType == null)
+            if (item == null || item.TargetType == null)
                 return;
 
             Detail = new NavigationPage((Page)(item.Arguments == null ? Activator.CreateInstance(item.TargetType) : Activator.CreateInstance(item.TargetType, item.Arguments)));

@@ -26,24 +26,7 @@ namespace CAMAcademyApp
         /// </summary>
         public App()
         {
-            SheetsService service = new SheetsService(new BaseClientService.Initializer
-            {
-                ApiKey = "AIzaSyBCjx3dXFHWd5hdm0CyQMRxYBeokxE9brU",
-                ApplicationName = "CAM Academy App"
-            });
-
-            SpreadsheetsResource.ValuesResource.GetRequest request = service.Spreadsheets.Values.Get(
-                "1nBjpqKNkDyyWw4OwvI_pb05lhRdpkSLJRRqwnbhmxv4",
-                "A2:F");
-
-            RootNode = LinkNode.Generate(request.Execute());
-
-            CleanNode(RootNode);
-
-            foreach (LinkNode childNode in RootNode.Children)
-                CleanNode(childNode);
-
-            MainPage = new MainPage();
+            MainPage = new SplashScreen();
         }
 
         /// <summary>
@@ -66,8 +49,41 @@ namespace CAMAcademyApp
                 node.Children.Remove(invalidNode);
         }
 
+        /// <summary>
+        /// Reads from the Google Spreadsheet to generate data used in the interface.
+        /// </summary>
+        private void GenerateUserInterface()
+        {
+            SheetsService service = new SheetsService(new BaseClientService.Initializer
+            {
+                ApiKey = "AIzaSyBCjx3dXFHWd5hdm0CyQMRxYBeokxE9brU",
+                ApplicationName = "CAM Academy App"
+            });
+
+            SpreadsheetsResource.ValuesResource.GetRequest request = service.Spreadsheets.Values.Get(
+                "1nBjpqKNkDyyWw4OwvI_pb05lhRdpkSLJRRqwnbhmxv4",
+                "A2:F");
+
+            RootNode = LinkNode.Generate(request.Execute());
+
+            CleanNode(RootNode);
+
+            foreach (LinkNode childNode in RootNode.Children)
+                CleanNode(childNode);
+        }
+
+        /// <summary>
+        /// Generates the user interface and displays the main page.
+        /// </summary>
         protected override void OnStart()
         {
+            Task.Run(() => GenerateUserInterface()).ContinueWith((x) =>
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    MainPage = new MainPage();
+                });
+            });
         }
 
         protected override void OnSleep()

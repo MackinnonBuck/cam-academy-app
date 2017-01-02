@@ -20,6 +20,11 @@ namespace CAMAcademyApp.Core
         public string Link { get; private set; }
 
         /// <summary>
+        /// The parent LinkNode.
+        /// </summary>
+        public LinkNode Parent { get; private set; }
+
+        /// <summary>
         /// The LinkNode's children.
         /// </summary>
         public List<LinkNode> Children { get; private set; }
@@ -42,9 +47,25 @@ namespace CAMAcademyApp.Core
             LinkNode root = new LinkNode();
 
             for (int endRow = 0; endRow < table.Values.Count;)
-                root.Children.Add(ParseSpreadsheet(table, out endRow, endRow));
+                root.Children.Add(ParseSpreadsheet(table, root, out endRow, endRow));
 
             return root;
+        }
+
+        /// <summary>
+        /// Enumerates through the extremities of the LinkNode's children.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<LinkNode> LeafNodes()
+        {
+            foreach (LinkNode child in Children)
+            {
+                if (child.Children.Count == 0)
+                    yield return child;
+                else
+                    foreach (LinkNode grandchild in child.LeafNodes())
+                        yield return grandchild;
+            }
         }
 
         /// <summary>
@@ -55,12 +76,13 @@ namespace CAMAcademyApp.Core
         /// <param name="row"></param>
         /// <param name="column"></param>
         /// <returns></returns>
-        private static LinkNode ParseSpreadsheet(ValueRange table, out int endRow, int row = 0, int column = 0)
+        private static LinkNode ParseSpreadsheet(ValueRange table, LinkNode parent, out int endRow, int row = 0, int column = 0)
         {
             LinkNode node = new LinkNode();
 
             node.Name = table.Values[row][column].ToString();
             node.Link = table.Values[row][column + 1].ToString();
+            node.Parent = parent;
 
             endRow = row + 1;
 
@@ -81,7 +103,7 @@ namespace CAMAcademyApp.Core
                 if (!value.Equals(string.Empty) && !value.StartsWith("&"))
                 {
                     int placebo;
-                    node.Children.Add(ParseSpreadsheet(table, out placebo, i, column + 2));
+                    node.Children.Add(ParseSpreadsheet(table, node, out placebo, i, column + 2));
                 }
             }
 
