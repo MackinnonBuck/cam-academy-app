@@ -59,9 +59,10 @@ namespace CAMAcademyApp.Core
 
             ListView = new ListView
             {
+                BackgroundColor = CAMColors.Primary,
                 Header = new Image
                 {
-                    Source = ImageSource.FromFile("CoverImage.jpg"),
+                    Source = ImageSource.FromFile("cover_image.jpg"),
                     Aspect = Aspect.AspectFit,
                     Margin = new Thickness(0, 0, 0, 8)
                 },
@@ -72,7 +73,7 @@ namespace CAMAcademyApp.Core
             };
             
             BackgroundColor = CAMColors.Primary;
-            Title = "View Switcher";
+            Title = "Menu";
             Content = new StackLayout
             {
                 VerticalOptions = LayoutOptions.FillAndExpand,

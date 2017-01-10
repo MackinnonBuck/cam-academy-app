@@ -1,10 +1,6 @@
 ﻿{
   "dependencies": {
-    "Microsoft.Bcl.Async": "1.0.168",
-    "Microsoft.Bcl.Build": "1.0.21",
-    "Microsoft.Bcl.Build.Symbols": "1.0.21",
-    "Microsoft.Bcl.Compression": "3.9.85",
-    "Microsoft.Net.Http": "2.2.29",
+    "HtmlAgilityPack": "1.4.9.5",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.0.0",
     "Xamarin.Forms": "2.3.3.175"
   },

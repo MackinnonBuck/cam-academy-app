@@ -62,7 +62,7 @@ namespace CAMAcademyApp.Core
             };
 
             label.SetBinding(Label.TextProperty, "Text");
-
+            
             View = new StackLayout
             {
                 Orientation = StackOrientation.Horizontal,

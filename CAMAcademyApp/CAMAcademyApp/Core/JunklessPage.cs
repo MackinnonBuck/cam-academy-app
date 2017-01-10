@@ -79,6 +79,7 @@ namespace CAMAcademyApp.Core
             } as View : new CustomWebView
             {
                 SourceHTML = x.Result,
+                BaseUri = baseUri,
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 HorizontalOptions = LayoutOptions.FillAndExpand
             });

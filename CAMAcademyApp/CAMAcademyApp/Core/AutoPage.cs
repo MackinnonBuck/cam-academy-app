@@ -12,64 +12,24 @@ namespace CAMAcademyApp.Core
 {
     public class AutoPage : TabbedPage
     {
-        private LinkNode pageNode;
-
         /// <summary>
         /// Initializes a new AutoPage with the given LinkNode.
         /// </summary>
         /// <param name="node"></param>
         public AutoPage(LinkNode node, int startPageIndex)
         {
-            pageNode = node;
+            LinkNode childNode = node.Children[startPageIndex];
 
-            foreach (LinkNode childNode in pageNode.Children)
-            {
-                ToolbarItem item = new ToolbarItem
-                {
-                    Order = ToolbarItemOrder.Secondary,
-                    Text = childNode.Name
-                };
-
-                item.Clicked += ToolbarItemClicked;
-                ToolbarItems.Add(item);
-            }
-
-            SetPage(node.Children[startPageIndex]);
-        }
-
-        /// <summary>
-        /// Changes the webpage section based on what ToolbarItem was clicked.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ToolbarItemClicked(object sender, EventArgs e)
-        {
-            ToolbarItem item = (ToolbarItem)sender;
-
-            LinkNode itemNode = pageNode.Children[ToolbarItems.IndexOf(item)];
-
-            SetPage(pageNode.Children[ToolbarItems.IndexOf(item)]);
-        }
-
-        /// <summary>
-        /// Sets the page from the given pageIndex and the optional subpageIndex.
-        /// </summary>
-        /// <param name="pageIndex"></param>
-        /// <param name="subpageIndex"></param>
-        private void SetPage(LinkNode node)
-        {
-            Children.Clear();
-
-            Title = pageNode.Name + " - " + node.Name;
+            Title = node.Name + " - " + childNode.Name;
 
             List<LinkNode> externalNodes = new List<LinkNode>();
 
-            foreach (LinkNode childNode in node.Children)
+            foreach (LinkNode grandchildNode in childNode.Children)
             {
-                if (childNode.Link.StartsWith(SiteAttributes.BaseUri))
-                    Children.Add(new JunklessPage(childNode.Name, childNode.Link));
+                if (grandchildNode.Link.StartsWith(SiteAttributes.BaseUri))
+                    Children.Add(new JunklessPage(grandchildNode.Name, grandchildNode.Link));
                 else
-                    externalNodes.Add(childNode);
+                    externalNodes.Add(grandchildNode);
             }
 
             if (externalNodes.Count > 0)

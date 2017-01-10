@@ -18,7 +18,8 @@ using System.Threading.Tasks;
 namespace CAMAcademyApp.Droid
 {
     [Activity(Label = "CAM Academy", Icon = "@drawable/icon", MainLauncher = true, NoHistory = true, Theme = "@style/MainTheme.Splash",
-        ConfigurationChanges = Android.Content.PM.ConfigChanges.ScreenSize | Android.Content.PM.ConfigChanges.Orientation)]
+        ConfigurationChanges = Android.Content.PM.ConfigChanges.ScreenSize | Android.Content.PM.ConfigChanges.Orientation,
+        ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class SplashScreen : Activity
     {
         protected override void OnCreate(Bundle savedInstanceState)

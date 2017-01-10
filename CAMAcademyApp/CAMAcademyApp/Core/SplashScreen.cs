@@ -21,7 +21,7 @@ namespace CAMAcademyApp.Core
                 Children = {
                     new Image
                     {
-                        Source = ImageSource.FromFile("splash_icon.png")
+                        Source = ImageSource.FromFile("alpha_icon.png")
                     },
                     new ActivityIndicator
                     {

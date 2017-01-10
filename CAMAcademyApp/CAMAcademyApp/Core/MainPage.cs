@@ -23,7 +23,11 @@ namespace CAMAcademyApp.Core
             masterPage = new MasterPage();
             masterPage.ListView.ItemSelected += ListViewItemSelected;
             Master = masterPage;
-            Detail = new NavigationPage(new JunklessPage("Home", SiteAttributes.BaseUri));
+            Detail = new NavigationPage(new JunklessPage("Home", SiteAttributes.BaseUri))
+            {
+                BarBackgroundColor = CAMColors.Primary,
+                BarTextColor = CAMColors.Accent
+            };
         }
 
         /// <summary>
@@ -42,7 +46,12 @@ namespace CAMAcademyApp.Core
             if (item == null || item.TargetType == null)
                 return;
 
-            Detail = new NavigationPage((Page)(item.Arguments == null ? Activator.CreateInstance(item.TargetType) : Activator.CreateInstance(item.TargetType, item.Arguments)));
+            Detail = new NavigationPage((Page)(item.Arguments == null ? Activator.CreateInstance(item.TargetType) : Activator.CreateInstance(item.TargetType, item.Arguments)))
+            {
+                BarBackgroundColor = CAMColors.Primary,
+                BarTextColor = CAMColors.Accent
+            };
+
             IsPresented = false;
         }
     }

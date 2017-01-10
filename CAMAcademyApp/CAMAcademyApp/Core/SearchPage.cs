@@ -96,7 +96,11 @@ namespace CAMAcademyApp.Core
 
                 AutoPage page = new AutoPage(node.Parent.Parent, node.Parent.Parent.Children.IndexOf(node.Parent));
 
-                ((MainPage)Application.Current.MainPage).Detail = new NavigationPage(page);
+                ((MainPage)Application.Current.MainPage).Detail = new NavigationPage(page)
+                {
+                    BarBackgroundColor = CAMColors.Primary,
+                    BarTextColor = CAMColors.Accent
+                };
 
                 page.CurrentPage = page.Children.First((x) => x.Title == node.Name);
             }

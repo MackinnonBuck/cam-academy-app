@@ -48,13 +48,26 @@ namespace CAMAcademyApp.Core
             {
                 ViewCell cell = new ViewCell
                 {
-                    View = new Label
+                    View = new StackLayout
                     {
-                        Text = "Search...",
-                        TextColor = CAMColors.Accent,
-                        HorizontalTextAlignment = TextAlignment.Center,
-                        VerticalTextAlignment = TextAlignment.Center,
-                        FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label))
+                        Orientation = StackOrientation.Horizontal,
+                        HorizontalOptions = LayoutOptions.Center,
+                        VerticalOptions = LayoutOptions.Center,
+                        Children =
+                        {
+                            new Image
+                            {
+                                Source = ImageSource.FromFile("ic_search_white_24dp.png")
+                            },
+                            new Label
+                            {
+                                Text = "Search...",
+                                TextColor = CAMColors.Accent,
+                                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                                HorizontalTextAlignment = TextAlignment.Center,
+                                VerticalTextAlignment = TextAlignment.Center
+                            }
+                        }
                     }
                 };
 

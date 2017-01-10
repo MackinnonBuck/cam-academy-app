@@ -7,11 +7,11 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="99cee08c-22eb-4131-a012-de1a42f5dd11"
+    Name="b74d683a-7623-4d59-9ff4-7c623dc88225"
     Publisher="CN=Mackinnon Buck"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="99cee08c-22eb-4131-a012-de1a42f5dd11" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="b74d683a-7623-4d59-9ff4-7c623dc88225" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>CAMAcademyApp.UWP</DisplayName>
