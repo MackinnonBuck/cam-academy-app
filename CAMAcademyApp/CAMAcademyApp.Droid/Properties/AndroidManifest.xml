@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="auto" android:versionCode="1" android:versionName="1.0" package="com.camacademy.camacademyapp">
 	<uses-sdk android:minSdkVersion="15" />
-	<application android:label="CAMAcademyApp.Droid"></application>
+	<uses-permission android:name="android.permission.INTERNET" />
+	<application android:label="CAM Academy" android:icon="@drawable/icon"></application>
 </manifest>

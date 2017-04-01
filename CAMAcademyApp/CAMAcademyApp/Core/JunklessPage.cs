@@ -15,41 +15,6 @@ namespace CAMAcademyApp.Core
     public class JunklessPage : ContentPage
     {
         /// <summary>
-        /// Returns the Content as a StackLayout.
-        /// </summary>
-        protected StackLayout StackLayout { get { return Content as StackLayout; } }
-
-        /// <summary>
-        /// The view the SelectiveWebPage displays.
-        /// </summary>
-        private View _mainView;
-
-        /// <summary>
-        /// Gets or sets the main view.
-        /// </summary>
-        private View MainView
-        {
-            get
-            {
-                return _mainView;
-            }
-            set
-            {
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    if (_mainView != null && StackLayout.Children.Contains(_mainView))
-                        StackLayout.Children.Remove(_mainView);
-
-                    _mainView = value;
-
-                    StackLayout.Children.Add(_mainView);
-
-                    StackLayout.ForceLayout();
-                });
-            }
-        }
-
-        /// <summary>
         /// Initializes a new SelectiveWebPage with the given title.
         /// </summary>
         /// <param name="title"></param>
@@ -61,27 +26,36 @@ namespace CAMAcademyApp.Core
             Content = new StackLayout
             {
                 HorizontalOptions = LayoutOptions.FillAndExpand,
-                VerticalOptions = LayoutOptions.FillAndExpand
-            };
-
-            MainView = new ActivityIndicator
-            {
-                Color = CAMColors.Accent,
-                IsRunning = true
-            };
-
-            Task.Run(() => ShaveJunkHtml(baseUri)).ContinueWith((x) => MainView = x.Result == null ? new Label
-            {
-                Text = "Could not load from webpage.",
-                TextColor = CAMColors.Accent,
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                HorizontalOptions = LayoutOptions.CenterAndExpand
-            } as View : new CustomWebView
-            {
-                SourceHTML = x.Result,
-                BaseUri = baseUri,
                 VerticalOptions = LayoutOptions.FillAndExpand,
-                HorizontalOptions = LayoutOptions.FillAndExpand
+                Children =
+                {
+                    new ActivityIndicator
+                    {
+                        Color = CAMColors.Accent,
+                        IsRunning = true
+                    }
+                }
+            };
+
+            Task.Run(() => ShaveJunkHtml(baseUri)).ContinueWith((x) =>
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    Content = x.Result == null ?
+                    new Label
+                    {
+                        Text = "Could not load from webpage.",
+                        TextColor = CAMColors.Accent,
+                        FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                        HorizontalOptions = LayoutOptions.CenterAndExpand
+                    } as View : new CustomWebView
+                    {
+                        SourceHTML = x.Result.OuterHtml,
+                        BaseUri = baseUri,
+                        VerticalOptions = LayoutOptions.FillAndExpand,
+                        HorizontalOptions = LayoutOptions.FillAndExpand
+                    };//new NativeWebPage(x.Result);
+                });
             });
         }
 
@@ -91,7 +65,7 @@ namespace CAMAcademyApp.Core
         /// <param name="baseUri"></param>
         /// <param name="attributesList"></param>
         /// <returns></returns>
-        async Task<string> ShaveJunkHtml(string baseUri)
+        async Task<HtmlNode> ShaveJunkHtml(string baseUri)
         {
             HtmlDocument document = await GenerateHtmlDocument(baseUri);
 
@@ -105,10 +79,12 @@ namespace CAMAcademyApp.Core
 
             node = SearchNode(node, "style", SiteAttributes.ContentStyleAttributes);
 
-            if (node == null)
-                return null;
+            return node;
 
-            return node.OuterHtml;
+            //if (node == null)
+            //    return null;
+            
+            //return node.OuterHtml;
         }
 
         /// <summary>

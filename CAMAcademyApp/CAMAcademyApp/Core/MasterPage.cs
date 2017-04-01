@@ -69,7 +69,8 @@ namespace CAMAcademyApp.Core
                 ItemsSource = cells,
                 ItemTemplate = new MasterTemplateSelector(),
                 VerticalOptions = LayoutOptions.FillAndExpand,
-                SeparatorVisibility = SeparatorVisibility.None
+                SeparatorVisibility = SeparatorVisibility.None,
+                HasUnevenRows = true
             };
             
             BackgroundColor = CAMColors.Primary;

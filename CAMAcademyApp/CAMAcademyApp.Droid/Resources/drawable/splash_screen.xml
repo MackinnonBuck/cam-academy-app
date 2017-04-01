@@ -7,8 +7,6 @@
     <bitmap
       android:src="@drawable/alpha_icon"
       android:tileMode="disabled"
-      android:gravity="center"
-      android:adjustViewBounds="true"
-      android:layout_gravity="center"/>
+      android:gravity="center"/>
   </item>
 </layer-list>

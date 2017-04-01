@@ -66,7 +66,8 @@ namespace CAMAcademyApp.Core
             View = new StackLayout
             {
                 Orientation = StackOrientation.Horizontal,
-                VerticalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.CenterAndExpand,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
                 Margin = new Thickness(16, 8, 0, 8),
                 Children =
                 {

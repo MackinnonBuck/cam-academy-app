@@ -53,6 +53,7 @@ namespace CAMAcademyApp.Core
                         Orientation = StackOrientation.Horizontal,
                         HorizontalOptions = LayoutOptions.Center,
                         VerticalOptions = LayoutOptions.Center,
+                        Margin = new Thickness(0, 8),
                         Children =
                         {
                             new Image

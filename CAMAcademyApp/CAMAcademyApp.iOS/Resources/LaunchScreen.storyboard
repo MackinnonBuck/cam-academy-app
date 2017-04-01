@@ -36,8 +36,6 @@
     </scenes>
     <resources>
         <image name="Icon-60.png" width="60" height="60"/>
-        <image name="Default-568h.png" width="320" height="568"/>
-        <image name="Default-Portrait.png" width="768" height="1004"/>
         <image name="Default.png" width="320" height="480"/>
         <image name="ic_link.png" width="24" height="24"/>
         <image name="ic_link_2x.png" width="48" height="48"/>

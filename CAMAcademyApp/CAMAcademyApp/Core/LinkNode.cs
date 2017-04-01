@@ -32,7 +32,7 @@ namespace CAMAcademyApp.Core
         /// <summary>
         /// Initializes a new LinkNode.
         /// </summary>
-        private LinkNode()
+        public LinkNode()
         {
             Children = new List<LinkNode>();
         }
@@ -95,7 +95,7 @@ namespace CAMAcademyApp.Core
             {
                 List<object> subRow = (List<object>)table.Values[i];
 
-                if (column + 2 > subRow.Count - 1)
+                if (column + 3 > subRow.Count - 1)
                     continue;
 
                 string value = subRow[column + 2].ToString();
